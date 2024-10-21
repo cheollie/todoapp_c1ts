@@ -10,6 +10,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [taskText, setTaskText] = useState('');
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
@@ -42,6 +43,8 @@ export default function App() {
       )
     );
   };
+
+  const filteredTasks = hideCompleted ? tasks.filter(task => !task.completed) : tasks;
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -79,11 +82,21 @@ export default function App() {
           <View style={styles.line} />
         </View>
         <FlatList
-          data={tasks}
+          data={filteredTasks}
           renderItem={renderTask}
           keyExtractor={(item) => item.id}
           style={styles.list}
         />
+        <View style={styles.headerContainer}>
+          <TouchableOpacity 
+            onPress={() => setHideCompleted(!hideCompleted)} 
+            style={styles.hideCompletedButton}
+          >
+            <Text style={styles.hideCompletedButtonText}>
+              {hideCompleted ? "Show Completed" : "Hide Completed"}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -193,5 +206,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     marginHorizontal: 10,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    marginBottom: 10,
+  },
+  hideCompletedButton: {
+    backgroundColor: '#66748B',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  hideCompletedButtonText: {
+    color: 'white',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
   },
 });
