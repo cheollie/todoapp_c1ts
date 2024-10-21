@@ -1,25 +1,33 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, SafeAreaView} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { Ionicons } from '@expo/vector-icons';
+/*
+ simple task manager app
+ chelsea wong
+ chapter one tech screen fall 2024
+*/
+import React, { useState, useCallback } from 'react'; // importing react hooks
+import { StyleSheet, View, FlatList, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, SafeAreaView} from 'react-native'; // import react native components
+import { StatusBar } from 'expo-status-bar'; // status for mobile
+import { useFonts } from 'expo-font'; // for custom fonts
+import * as SplashScreen from 'expo-splash-screen'; // for splash screen (loading screen while fonts load)
+import { Ionicons } from '@expo/vector-icons'; // for icons
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync(); // prevents autohiding while loading fonts
 
 export default function App() {
+  // state variables
   const [tasks, setTasks] = useState([]);
   const [taskText, setTaskText] = useState('');
   const [hideCompleted, setHideCompleted] = useState(false);
 
+  // load nice custom fonts
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
   });
 
+  // font loading callback
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync();
+      await SplashScreen.hideAsync(); 
     }
   }, [fontsLoaded]);
 
@@ -27,7 +35,8 @@ export default function App() {
     return null;
   }
 
-  const addTask = () => {
+  // functions
+  const addTask = () => { // adding tasks
     if (taskText.trim() === '') {
       Alert.alert('error', 'task cannot be empty');
       return;
@@ -36,7 +45,7 @@ export default function App() {
     setTaskText('');
   };
 
-  const toggleTaskCompletion = (id) => {
+  const toggleTaskCompletion = (id) => { // completing tasks
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
@@ -44,13 +53,13 @@ export default function App() {
     );
   };
 
-  const filteredTasks = hideCompleted ? tasks.filter(task => !task.completed) : tasks;
-
-  const deleteTask = (id) => {
+  const deleteTask = (id) => { // deleting tasks
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const renderTask = ({ item }) => (
+  const filteredTasks = hideCompleted ? tasks.filter(task => !task.completed) : tasks; // filtering tasks to be displayed
+
+  const renderTask = ({ item }) => ( // rendering how each task item looks
     <View style={styles.taskContainer}>
       <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)} style={styles.checkboxContainer}>
         <Ionicons
@@ -70,8 +79,8 @@ export default function App() {
     </View>
   );
 
-  return (
-    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+  return ( // main layout
+    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}> 
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
@@ -93,7 +102,7 @@ export default function App() {
             style={styles.hideCompletedButton}
           >
             <Text style={styles.hideCompletedButtonText}>
-              {hideCompleted ? "Show Completed" : "Hide Completed"}
+              {hideCompleted ? "show completed" : "hide completed"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -114,6 +123,7 @@ export default function App() {
   );
 }
 
+// styles for components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
