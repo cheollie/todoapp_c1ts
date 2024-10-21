@@ -52,8 +52,8 @@ export default function App() {
       <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)} style={styles.checkboxContainer}>
         <Ionicons
           name={item.completed ? "checkbox-outline" : "square-outline"}
-          size={24}
-          color={item.completed ? "#4CAF50" : "#757575"}
+          size={20}
+          color={item.completed ? "#4D596C" : "#000"}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)} style={styles.taskTextContainer}>
@@ -62,7 +62,7 @@ export default function App() {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.deleteButton}>
-        <Text style={styles.deleteButtonText}>delete</Text>
+        <Ionicons name="trash-outline" size={18} color="#fff" />
       </TouchableOpacity>
     </View>
   );
@@ -73,7 +73,11 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
       >
-        <Text style={styles.title}>task manager</Text>
+        <View style={styles.titleContainer} >
+          <View style={styles.line} />
+          <Text style={styles.title}>task manager</Text>
+          <View style={styles.line} />
+        </View>
         <FlatList
           data={tasks}
           renderItem={renderTask}
@@ -83,12 +87,12 @@ export default function App() {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Add a new task"
+            placeholder="add a new task"
             value={taskText}
             onChangeText={setTaskText}
           />
           <TouchableOpacity onPress={addTask} style={styles.addButton}>
-            <Text style={styles.addButtonText}>add</Text>
+            <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -100,7 +104,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#4D596C',
     fontFamily: 'Poppins-Regular',
   },
   keyboardAvoidingView: {
@@ -113,33 +117,36 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: 'center',
     fontFamily: 'Poppins-Bold',
+    color: 'white',
   },
   inputContainer: {
     flexDirection: 'row',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    backgroundColor: '#66748B',
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingHorizontal: 10,
+    borderRadius: 15,
+    paddingHorizontal: 15,
     paddingVertical: 5,
     marginRight: 10,
     fontFamily: 'Poppins-Regular',
+    backgroundColor: '#4D596C',
+    color: 'white',
   },
   addButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
+    backgroundColor: '#f8b042',
+    padding: 10,
+    borderColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 200,
     justifyContent: 'center',
-  },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Bold',
+    alignItems: 'center',
   },
   list: {
     flex: 1,
@@ -148,10 +155,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    marginVertical: 2,
+    marginHorizontal: 10,
+    backgroundColor: '#ABB9CF',
+    borderRadius: 8,
   },
   checkboxContainer: {
     marginRight: 10,
@@ -165,16 +174,24 @@ const styles = StyleSheet.create({
   },
   completedTask: {
     textDecorationLine: 'line-through',
-    color: '#999',
+    color: '#4D596C',
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
+    backgroundColor: '#ec6a52',
+    padding: 6,
+    borderRadius: 7,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  deleteButtonText: {
-    color: '#fff',
-    fontFamily: 'Poppins-Bold',
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  line: {
+    height: 1,
+    backgroundColor: '#fff',
+    flex: 1,
+    marginHorizontal: 10,
   },
 });
